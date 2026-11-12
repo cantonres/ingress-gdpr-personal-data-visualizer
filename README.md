@@ -133,6 +133,7 @@ npm run preview        # 本地预览构建产物
 ## 声明 / Disclaimer
 
 - 本站 / 本工具为**爱好者作品，与 Niantic Inc. 无官方关联**；**Ingress 是 Niantic Inc. 的注册商标**。
+- 本项目代码由 AI 实现。
 - 本项目**不分发、不包含任何个人数据**；任何由用户导出的 GDPR 数据由用户自行负责保管、使用与合规。
 - 徽章图标版权归其各自权利人所有，图片热链自 ingress.plus；地图数据 © OpenStreetMap contributors、© OpenFreeMap。
 - 参考与致谢：[UPC-UPV-for-IITC](https://github.com/Choujingress/UPC-UPV-for-IITC)（思路参考）、[cantonres/.github](https://github.com/cantonres/.github)（社区新人教程中的游戏术语/专用词汇）、[md-atlas](https://github.com/ReiiNoki/md-atlas)（intel 风格底图参考）、[ingress.plus](https://ingress.plus/badges)（徽章图标）。

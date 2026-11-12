@@ -133,6 +133,7 @@ Request a **personal data export (GDPR / Data Export)** from Niantic's official 
 ## Disclaimer
 
 - This site / tool is a **fan-made project, not affiliated with Niantic Inc.**; **Ingress is a registered trademark of Niantic Inc.**
+- The code of this project was implemented by AI.
 - This project **distributes and contains no personal data**; users are responsible for storing and handling their own GDPR exports.
 - Badge icons are copyrighted by their respective owners and hotlinked from ingress.plus; map data © OpenStreetMap contributors, © OpenFreeMap.
 - Credits: [UPC-UPV-for-IITC](https://github.com/Choujingress/UPC-UPV-for-IITC) (concept reference), [cantonres/.github](https://github.com/cantonres/.github) (in-game terminology from the community onboarding tutorials), [md-atlas](https://github.com/ReiiNoki/md-atlas) (Intel-style basemap reference), [ingress.plus](https://ingress.plus/badges) (badge icons).
