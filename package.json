@@ -1,0 +1,29 @@
+{
+  "name": "ingress-gdpr-visualizer",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Interactive visualization of your own Ingress GDPR data export: UPV/UPC map, activity dashboard and (later) trajectory playback.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "ingest": "node scripts/ingest.mjs",
+    "catalog": "node scripts/fetch-badge-catalog.mjs",
+    "demo:data": "node scripts/generate-demo-data.mjs && node scripts/ingest.mjs --src data-demo/raw --out data-demo/out",
+    "demo:shots": "node scripts/capture-screenshots.mjs"
+  },
+  "dependencies": {
+    "maplibre-gl": "^6.4.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.3.0",
+    "playwright-core": "^1.65.0",
+    "vite": "^8.3.8"
+  }
+}

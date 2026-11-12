@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ingress GDPR Visualizer">
+  <title>Ingress GDPR Visualizer</title>
+  <rect width="64" height="64" rx="14" fill="#0e1b20"/>
+  <path d="M16 44 L47 24 L44 48 Z" fill="#4C9AFF" fill-opacity="0.16"/>
+  <path d="M16 44 L47 24 M47 24 L44 48 M44 48 L16 44" fill="none" stroke="#4C9AFF" stroke-opacity="0.65" stroke-width="2.4" stroke-linejoin="round"/>
+  <circle cx="16" cy="44" r="8.5" fill="#9B7BE8"/>
+  <circle cx="47" cy="24" r="8.5" fill="#EA3B2E"/>
+  <circle cx="44" cy="48" r="6" fill="#4C9AFF"/>
+  <circle cx="16" cy="44" r="3.2" fill="#0e1b20"/>
+  <circle cx="47" cy="24" r="3.2" fill="#0e1b20"/>
+  <circle cx="44" cy="48" r="2.4" fill="#0e1b20"/>
+</svg>

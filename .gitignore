@@ -1,0 +1,13 @@
+node_modules/
+dist/
+
+# Preprocessed (derived) data and any raw GDPR export. Never commit personal data.
+/data/
+/raw/
+
+*.log
+.DS_Store
+
+# Synthetic demo data / demo build (screenshots only are committed)
+/data-demo/
+/dist-demo/
