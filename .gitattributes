@@ -1,0 +1,9 @@
+# Normalise line endings so the repository has one convention (LF).
+# Run `git add --renormalize .` once after this file lands to normalise the
+# existing CRLF blobs in a single, isolated commit.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary

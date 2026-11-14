@@ -11,3 +11,12 @@ dist/
 # Synthetic demo data / demo build (screenshots only are committed)
 /data-demo/
 /dist-demo/
+
+# Dev-only tooling: synthetic data generation and README screenshot capture.
+# Users never need these; they are kept out of the published repository.
+/scripts/generate-demo-data.mjs
+/scripts/capture-screenshots.mjs
+
+# IITC userscript (work in progress, not ready for release)
+/iitc/
+/scripts/build-iitc.mjs
