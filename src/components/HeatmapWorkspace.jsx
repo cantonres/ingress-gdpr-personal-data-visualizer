@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import * as maplibregl from "maplibre-gl";
 import mapWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { STYLES } from "./mapShared.js";
+import { useFaction, factionStyle, syncFactionPaint, readFaction } from "../faction.js";
 import { useData } from "../dataContext.js";
 import { useI18n } from "../i18n.jsx";
 
@@ -61,6 +62,7 @@ export default function HeatmapWorkspace() {
   const dataRef = useRef(null);
   const stateRef = useRef({ active: new Set(["h"]) });
   const [base, setBase] = useState("intel");
+  const faction = useFaction();
   const [active, setActive] = useState(new Set(["h"]));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -106,17 +108,30 @@ export default function HeatmapWorkspace() {
     if (map) map.setStyle(STYLES[base]);
   }, [base]);
 
+  // Faction palette: repaint basemap layers in place (heat layers untouched).
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const apply = () => {
+      if (mapRef.current === map) syncFactionPaint(map, STYLES[base], faction);
+    };
+    apply();
+    map.on("style.load", apply);
+    return () => map.off("style.load", apply);
+  }, [base, faction]);
+
   useEffect(() => {
     if (mapRef.current || !containerRef.current) return;
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: STYLES.intel,
+      style: factionStyle(STYLES.intel, readFaction()),
       center: initialView().center,
       zoom: initialView().zoom,
       attributionControl: { compact: true },
     });
     map.addControl(new maplibregl.NavigationControl(), "bottom-right");
     mapRef.current = map;
+    if (window.__PB_TEST__) window.__hwMap = map; // test hook (set window.__PB_TEST__ before load)
     const onReady = () => {
       dataRef.current = data.portalsFC;
       setLoading(false);

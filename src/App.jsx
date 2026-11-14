@@ -5,12 +5,13 @@ import HeatmapWorkspace from "./components/HeatmapWorkspace.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import Playback from "./components/Playback.jsx";
 import Onboarding from "./components/Onboarding.jsx";
-import { DataContext, useData, loadPreGenerated } from "./dataContext.js";
+import { DataContext, loadPreGenerated } from "./dataContext.js";
 import { I18nProvider } from "./i18n.jsx";
 
 export default function AppContainer() {
   const [data, setData] = useState(null);
   const [state, setState] = useState("loading"); // loading | onboarding | ready
+  const [tab, setTab] = useState("map");
 
   const resetData = () => {
     setData(null);
@@ -33,36 +34,30 @@ export default function AppContainer() {
 
   return (
     <I18nProvider>
+      {/* Shared header on every screen: language, faction theme, about, GitHub.
+          Tabs are inert until data is loaded. */}
+      <TopBar tab={tab} onTab={setTab} tabsDisabled={state !== "ready"} onReset={resetData} />
       {state === "loading" && <div className="loading">…</div>}
       {state === "onboarding" && (
-        <Onboarding
-          onReady={(d) => {
-            setData(d);
-            setState("ready");
-          }}
-        />
+        <div className="main">
+          <Onboarding
+            onReady={(d) => {
+              setData(d);
+              setState("ready");
+            }}
+          />
+        </div>
       )}
       {state === "ready" && (
         <DataContext.Provider value={{ ...data, resetData }}>
-          <InnerApp />
+          <div className="main">
+            {tab === "map" && <MapWorkspace />}
+            {tab === "heatmap" && <HeatmapWorkspace />}
+            {tab === "dashboard" && <Dashboard />}
+            {tab === "playback" && <Playback />}
+          </div>
         </DataContext.Provider>
       )}
     </I18nProvider>
-  );
-}
-
-function InnerApp() {
-  const [tab, setTab] = useState("map");
-  useData();
-  return (
-    <>
-      <TopBar tab={tab} onTab={setTab} />
-      <div className="main">
-        {tab === "map" && <MapWorkspace />}
-        {tab === "heatmap" && <HeatmapWorkspace />}
-        {tab === "dashboard" && <Dashboard />}
-        {tab === "playback" && <Playback />}
-      </div>
-    </>
   );
 }

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import * as maplibregl from "maplibre-gl";
 import mapWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import { STYLES, EVENT_COLORS, EVENT_LABELS, EVENT_DESC, UPV_COLOR, UPC_COLOR, fmtDate } from "./mapShared.js";
+import { useFaction, factionStyle, syncFactionPaint, readFaction } from "../faction.js";
 import { useData } from "../dataContext.js";
 import { eventsToGeoJSON } from "../lib/ingestCore.js";
 import { useI18n } from "../i18n.jsx";
@@ -31,6 +32,7 @@ export default function MapWorkspace() {
   const oprRef = useRef(null);
   const stateRef = useRef({ cats: new Set([DEFAULT_CAT]), upc: false, upv: true });
   const [base, setBase] = useState("intel");
+  const faction = useFaction();
   const [cats, setCats] = useState(new Set([DEFAULT_CAT]));
   const [portalLayers, setPortalLayers] = useState({ upc: false, upv: true });
   const [eventsOn, setEventsOn] = useState(false);
@@ -130,7 +132,9 @@ export default function MapWorkspace() {
         source: "events",
         paint: {
           "circle-color": ["match", ["get", "c"], ...Object.entries(EVENT_COLORS).flat(), "#888780"],
-          "circle-radius": ["interpolate", ["linear"], ["zoom"], 4, 1.3, 11, 2.4, 16, 4],
+          "circle-radius": [
+            "interpolate", ["linear"], ["zoom"], 4, 1.3, 11, 2.4, 16, 4,
+          ],
           "circle-opacity": 0.5,
         },
       });
@@ -184,13 +188,14 @@ export default function MapWorkspace() {
     if (mapRef.current || !containerRef.current) return;
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: STYLES.intel,
+      style: factionStyle(STYLES.intel, readFaction()),
       center: initialView().center,
       zoom: initialView().zoom,
       attributionControl: { compact: true },
     });
     map.addControl(new maplibregl.NavigationControl(), "bottom-right");
     mapRef.current = map;
+    if (window.__PB_TEST__) window.__mwMap = map; // test hook (set window.__PB_TEST__ before load)
     const onReady = () => {
       applyPortals(map, data.portalsFC);
       if (eventsRef.current) applyEvents(map, eventsRef.current);
@@ -217,6 +222,18 @@ export default function MapWorkspace() {
     const map = mapRef.current;
     if (map) map.setStyle(STYLES[base]);
   }, [base]);
+
+  // Faction palette: repaint basemap layers in place (data layers untouched).
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const apply = () => {
+      if (mapRef.current === map) syncFactionPaint(map, STYLES[base], faction);
+    };
+    apply();
+    map.on("style.load", apply);
+    return () => map.off("style.load", apply);
+  }, [base, faction]);
 
   useEffect(() => {
     const map = mapRef.current;

@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useData } from "../dataContext.js";
+import { useEffect, useState } from "react";
 import { useI18n } from "../i18n.jsx";
+import { useFaction, writeFaction, ENLIGHTENED_ACCENT, RESISTANCE_ACCENT } from "../faction.js";
 
 const TABS = [
   ["map", "tab.map"],
@@ -20,10 +20,11 @@ function GitHubIcon() {
   );
 }
 
-export default function TopBar({ tab, onTab }) {
+export default function TopBar({ tab, onTab, tabsDisabled = false, onReset }) {
   const { t, lang, setLang } = useI18n();
-  const data = useData();
   const [aboutOpen, setAboutOpen] = useState(false);
+  const faction = useFaction();
+  const setFaction = (f) => writeFaction(f);
 
   return (
     <header className="topbar">
@@ -33,15 +34,40 @@ export default function TopBar({ tab, onTab }) {
       </div>
       <nav className="tabs">
         {TABS.map(([id, key]) => (
-          <button key={id} className={tab === id ? "active" : ""} onClick={() => onTab(id)}>
+          <button
+            key={id}
+            className={!tabsDisabled && tab === id ? "active" : ""}
+            onClick={() => onTab(id)}
+            disabled={tabsDisabled}
+          >
             {t(key)}
           </button>
         ))}
       </nav>
       <div className="topbar-right">
-        <button className="top-link" onClick={() => data?.resetData?.()} title={t("data.reselect")}>
-          {t("data.reselect")}
-        </button>
+        <div className="faction-switch" title={t("top.faction")} role="group" aria-label={t("top.faction")}>
+          <button
+            className={faction === "enlightened" ? "on" : ""}
+            onClick={() => setFaction("enlightened")}
+            aria-pressed={faction === "enlightened"}
+          >
+            <span className="f-dot" style={{ background: ENLIGHTENED_ACCENT }} />
+            {t("faction.enlightened")}
+          </button>
+          <button
+            className={faction === "resistance" ? "on" : ""}
+            onClick={() => setFaction("resistance")}
+            aria-pressed={faction === "resistance"}
+          >
+            <span className="f-dot" style={{ background: RESISTANCE_ACCENT }} />
+            {t("faction.resistance")}
+          </button>
+        </div>
+        {!tabsDisabled && (
+          <button className="top-link" onClick={onReset} title={t("data.reselect")}>
+            {t("data.reselect")}
+          </button>
+        )}
         <button className="lang-switch" onClick={() => setLang(lang === "zh" ? "en" : "zh")} title="中文 / English">
           {t("lang.switch")}
         </button>

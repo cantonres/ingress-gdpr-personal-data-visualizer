@@ -19,10 +19,10 @@ export const EVENT_COLORS = {
   link: "#7F77DD",
   portal_edit: "#6E9BD1",
   recharge: "#C58AE8",
-  item: "#B4B2A9",
-  login: "#888780",
+  item: "#D9B168",
+  login: "#F0F0F0",
   location: "#F09595",
-  other: "#888780",
+  other: "#B0B0B0",
 };
 
 export const EVENT_LABELS = {

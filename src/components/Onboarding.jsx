@@ -1,12 +1,13 @@
 import { useRef, useState } from "react";
 import { ingestFromFiles } from "../dataContext.js";
 import { useI18n } from "../i18n.jsx";
+import { CHANGELOG } from "../changelog.js";
 
 // Shown when no pre-generated data exists (fresh open-source deployment)
 // or when the user opens the app with ?setup=1. Everything is parsed
 // locally in the browser; nothing is uploaded anywhere.
 export default function Onboarding({ onReady }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const folderInputRef = useRef(null);
   const filesInputRef = useRef(null);
   const [busy, setBusy] = useState(false);
@@ -144,8 +145,25 @@ export default function Onboarding({ onReady }) {
             <li>{t("onb.f3")}</li>
             <li>{t("onb.f4")}</li>
             <li>{t("onb.f5")}</li>
+            <li>{t("onb.f6")}</li>
           </ul>
           <p className="onb-note">{t("onb.note")}</p>
+        </div>
+
+        <div className="onb-changelog">
+          <h3>{t("onb.changelogTitle")}</h3>
+          <ol className="cl-list">
+            {CHANGELOG.map((e, i) => (
+              <li key={i} className="cl-item">
+                <div className="cl-meta">
+                  <span className="cl-date">{e.date}</span>
+                  {e.commit && <span className="cl-commit">{e.commit}</span>}
+                  {e.unreleased && <span className="cl-tag">{t("onb.unreleased")}</span>}
+                </div>
+                <p className="cl-text">{lang === "en" ? e.en : e.zh}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </div>

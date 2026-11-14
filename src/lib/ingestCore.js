@@ -16,7 +16,7 @@ export const EVENT_CATEGORIES = [
   ["field", /^created field$/],
   ["portal_edit", /^portal edit or submission/],
   ["recharge", /^recharged resonator/],
-  ["item", /^(dropped item|item recycled|picked up)/],
+  ["item", /^(dropped item|item recycled|picked up|redeem passcode or pick up item)/],
   ["login", /^login$/],
   ["location", /^location update$/],
 ];
@@ -139,6 +139,10 @@ export function parseGameLog(texts) {
     const rows = readTsv(text);
     for (let i = 1; i < rows.length; i++) {
       const [time, latS, lngS, trigger, comment] = rows[i];
+      // game_log - Copy.tsv is a 3-column [time/lat/lng] projection of the main
+      // log (no trigger/comment). Skip those rows: they are position duplicates
+      // of real action rows, not independent events.
+      if (!trigger) continue;
       const key = `${time}|${latS}|${lngS}|${trigger}|${comment ?? ""}`;
       if (seen.has(key)) {
         duplicateRows++;
