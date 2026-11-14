@@ -1,6 +1,6 @@
 # Ingress GDPR Visualizer
 
-> 把 Niantic Ingress 的个人数据导出（GDPR export）变成可交互的地图、热力图与仪表盘。
+> 把 Niantic Ingress 的个人数据导出（GDPR export）变成可交互的地图、热力图、仪表盘与轨迹回放。
 > **所有解析都在本地完成，数据不会上传到任何服务器。**
 
 [English](README_EN.md) · [中文](#快速开始)
@@ -9,7 +9,7 @@
 
 ## 截图
 
-以下截图使用**合成的广州示例数据**（`npm run demo:data` 生成，完全虚构，不含任何真实个人数据）。
+以下截图使用**合成的广州示例数据**（完全虚构，不含任何真实个人数据）。
 
 | 地图 | 热力图 |
 | --- | --- |
@@ -19,23 +19,26 @@
 | --- | --- |
 | ![仪表盘页](docs/screenshots/dashboard.png) | ![Badges](docs/screenshots/dashboard-badges.png) |
 
-| 轨迹回放（占位） | 开箱选数据 |
+| 轨迹回放 | 开箱选数据 |
 | --- | --- |
-| ![轨迹回放占位页](docs/screenshots/playback.png) | ![选数据屏](docs/screenshots/onboarding.png) |
+| ![轨迹回放页](docs/screenshots/playback.png) | ![选数据屏](docs/screenshots/onboarding.png) |
 
-## 功能
+## 功能与更新记录
 
-| 页面 | 内容 |
-| --- | --- |
-| **地图** | UPV / UPC 双图层；13 类事件分布（全量真实数据，**零抽稀**）；OPR 建议位置；intel 暗色 / 亮色双底图；逐 portal 悬浮统计（hack、插脚、抬脚、mod、占领次数） |
-| **热力图** | 按被 hack / 被占领 / 插脚 / 抬脚次数加权的 portal 热度，带刻度 colorbar，多指标可叠加 |
-| **仪表盘** | 最多 24 个时间序列（步数、XM、MU、驻守、OPR 等），逐日 / 逐月 / 逐年切换；悬停显示数值、环比、同比；统计卡、Badges 墙、Comm 提及与档案文本 |
-| **轨迹回放** | 占位页（见 ROADMAP） |
-| **通用** | 中 / 英双语切换、GitHub 链接与爱好者声明弹层、随时「重新选择数据」、深色主题 |
+下表按时间排列，同时作为本项目的更新日志（日期为功能落地时间）。
+
+| 日期 | 页面 | 内容 |
+| --- | --- | --- |
+| 2026-11-12 | **地图** | UPV / UPC 双图层；13 类事件分布（全量真实数据，**零抽稀**）；OPR 建议位置；intel 暗色 / 亮色双底图；逐 portal 悬浮统计（hack、插脚、抬脚、mod、占领次数） |
+| 2026-11-12 | **热力图** | 按被 hack / 被占领 / 插脚 / 抬脚次数加权的 portal 热度，带刻度 colorbar，多指标可叠加 |
+| 2026-11-12 | **仪表盘** | 最多 24 个时间序列（步数、XM、MU、驻守、OPR 等），逐日 / 逐月 / 逐年切换；悬停显示数值、环比、同比；统计卡、Badges 墙、Comm 提及与档案文本 |
+| 2026-11-12 | **通用** | 中 / 英双语切换、GitHub 链接与爱好者声明弹层、随时「重新选择数据」、深色主题 |
+| 2026-11-14 | **轨迹回放** | 时间压缩比速度档（1 小时 / 天 / 周 / 月每秒）；长间隔不插值、停留点聚合；活跃度日历与 scrubber 热条、单日重演、跟随播放头、出界方向与距离；事件点全量不抽稀 |
+| 2026-11-14 | **通用** | 阵营配色（启蒙 / 反抗，UI 与底图实时切换） |
 
 ### 两种数据装载方式
 
-打开应用时若没有预生成数据，会自动显示**选数据屏**（`?setup=1` 可强制模拟）：
+打开应用时若没有预生成数据，会自动显示**选数据屏**：
 
 1. **选择整个导出文件夹（推荐）**：完整体验——地图、热力图、完整仪表盘、Badges、OPR、Comm。
 2. **仅选择 `game_log` 文件**：轻量体验——地图、热力图，以及最多 10 条由事件时间戳统计出的曲线（hack / 插脚 / 抬脚 / 占领 / link / field 等）。步数、XM、MU、Badges、OPR 等依赖其它文件，此模式下不可用。
@@ -66,7 +69,7 @@ npm run dev            # http://127.0.0.1:5173
 首次打开会显示选数据屏；选择你的 GDPR 导出文件夹即可。若要预生成数据（例如部署静态站点），先跑 `npm run ingest`，再：
 
 ```bash
-npm run build          # 产物在 dist/，会自动带上 data/
+npm run build          # 产物在 dist/，会带上应用需要的 5 个数据文件
 npm run preview        # 本地预览构建产物
 ```
 
@@ -85,7 +88,6 @@ npm run preview        # 本地预览构建产物
 | `npm run preview` | 预览构建产物 |
 | `npm run ingest -- --src <dir> [--out <dir>]` | 预处理 GDPR 导出，生成 `data/` |
 | `npm run catalog` | 刷新 `src/data/badgeCatalog.js`（ingress.plus 徽章图标 URL 表） |
-| `npm run demo:data` / `npm run demo:shots` | 生成合成示例数据 / 重新截取 README 截图 |
 
 ---
 
@@ -97,15 +99,16 @@ npm run preview        # 本地预览构建产物
 ├── docs/screenshots/        # README 截图（合成示例数据）
 ├── scripts/
 │   ├── ingest.mjs           # CLI：读原始导出 → data/
-│   ├── generate-demo-data.mjs
-│   ├── capture-screenshots.mjs
 │   └── fetch-badge-catalog.mjs
 ├── src/
-│   ├── lib/ingestCore.js    # 解析内核（Node CLI 与浏览器共用）
+│   ├── lib/ingestCore.js    # 解析内核（Node CLI / 浏览器共用）
 │   ├── dataContext.js       # 预生成 / 浏览器本地解析两条数据路径
+│   ├── faction.js           # 阵营配色（UI 强调色 + 底图调色）
+│   ├── changelog.js         # 录入页「更新日志」
 │   ├── i18n.jsx             # 中英双语字典
 │   ├── data/                # intel / 亮色底图样式、徽章图标 URL 表
-│   └── components/          # 地图、热力图、仪表盘、Onboarding、Badges 等
+│   └── components/          # 地图、热力图、仪表盘、轨迹回放、Onboarding 等
+├── .github/workflows/       # CI：构建 + 依赖审计
 ├── data/                    # ⛔ 本地生成、已 gitignore（含个人数据）
 └── dist/                    # ⛔ 构建产物、已 gitignore
 ```
@@ -117,15 +120,16 @@ npm run preview        # 本地预览构建产物
 - 浏览器模式：**不上传任何文件**，全部在页面内用 `src/lib/ingestCore.js` 解析；
 - CLI 模式：只读取 `--src` 指定目录，输出写到 `--out`，**不写回源目录**；
 - `data/`、`raw/`、`node_modules/`、`dist/` 全部被 `.gitignore` 排除；
-- 徽章图标热链自 [ingress.plus](https://ingress.plus/badges)，不下载到本仓库；地图瓦片来自 [OpenFreeMap](https://openfreemap.org/) / OpenStreetMap。
+- 徽章图标热链自 [ingress.plus](https://ingress.plus/badges)，不下载到本仓库；地图瓦片来自 [OpenFreeMap](https://openfreemap.org/) / OpenStreetMap；
+- `npm run build` 只把 `meta.json`、`dashboard.json`、`portals.geojson`、`events.json`、`opr.geojson` 五个文件拷进 `dist/data`（`DATA-NOTES.md` 与原始导出不会被复制）。其中 `meta.json` 含档案 / Comm 原文、`events.json` 与 `portals.geojson` 含精确位置——**它们仍是真实个人数据**。
 
-> **关于部署**：本工具面向**本地部署**。虽然构建产物技术上可以放到线上静态服务器，但 GDPR 导出包含精确位置、时间、邮箱、设备等敏感个人信息，**不建议线上部署**。
+> **关于部署**：本工具面向**本地部署**。虽然构建产物技术上可以放到线上静态服务器，但 GDPR 导出包含精确位置、时间、邮箱、设备等敏感个人信息，**不建议线上部署**；`dist/data` 里的文件就是你的真实数据，**不要公开托管 `dist/`**。
 
 ---
 
 ## ROADMAP
 
-- [ ] 轨迹回放
+- [x] 轨迹回放（时间压缩比、长间隔不插值、停留聚合、活跃度日历）
 - [ ] IITC 插件
 
 ---
