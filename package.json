@@ -12,7 +12,9 @@
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",
     "ingest": "node scripts/ingest.mjs",
-    "catalog": "node scripts/fetch-badge-catalog.mjs"
+    "catalog": "node scripts/fetch-badge-catalog.mjs",
+    "build:iitc": "node scripts/build-iitc.mjs",
+    "check:iitc": "node scripts/build-iitc.mjs --check"
   },
   "dependencies": {
     "maplibre-gl": "^6.4.1",
