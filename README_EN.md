@@ -9,7 +9,7 @@ This is a fan-made project and **contains no raw personal data files**. You pick
 
 ## Screenshots
 
-The six web-app screenshots below use **synthetic Guangzhou demo data** (entirely fictional, contains no real personal data). The IITC plugin screenshot in its own section below has been redacted; see the note there.
+The six web-app screenshots below use **synthetic Guangzhou demo data** (entirely fictional, contains no real personal data).
 
 | Map | Heatmap |
 | --- | --- |
@@ -98,9 +98,11 @@ Request a **personal data export (GDPR / Data Export)** from Niantic's official 
 
 `iitc/gdpr-visualizer.user.js` is a single-file userscript shipped with this repository. It overlays your own GDPR history on the [IITC-CE](https://iitc.app/) intel map and **does not require running this tool first**: it parses the raw `game_log*.tsv` itself, using the same parsing core (`src/lib/ingestCore.js`) as the web app, so the portal set and interaction counts match.
 
+Hovering a portal shows team / level, UPC status, total interactions and the per-category breakdown (hack, capture, deploy, upgrade, mod, link), plus the first visit, last visit and the span between them. The panel footer reports portal count, UPC / UPV and coverage for the current view — **UPC is included in UPV**, and only portals inside the map bounds are counted.
+
 ![IITC plugin interface (redacted screenshot)](docs/screenshots/IITCplugin.png)
 
-> This screenshot comes from a real GDPR export; statistics, portal names, map labels and the hover panel have been mosaicked. It shows the interface only and contains no readable personal data.
+> This screenshot comes from a real GDPR export; statistics have been mosaicked. It shows the interface only and contains no readable personal data.
 
 **Install**: add `iitc/gdpr-visualizer.user.js` with Tampermonkey / Violentmonkey (the header declares `@match https://intel.ingress.com/*`), or add it from the repository raw URL in IITC-CE's plugin manager. The header carries `@updateURL` / `@downloadURL`, so the userscript manager handles subsequent updates.
 
@@ -110,10 +112,8 @@ Request a **personal data export (GDPR / Data Export)** from Niantic's official 
 | --- | --- |
 | **Import game_log.tsv…** | Pick `game_log.tsv` (multi-select is supported; duplicate copies are de-duplicated). Only `game_log*.tsv` is accepted — no folder import, no pre-generated geojson |
 | **Interaction rings / Always show counts** | Rings per portal coloured by total interaction count; breakpoints adapt to the imported data (p50 / p80 / p95) and the legend shows the actual ranges. Rings scale continuously with zoom; counts are labelled from zoom 14 upwards |
-| **Event dots + category toggles** | Overlay raw events per category. Only `attack` is selected by default; categories without coordinates (such as `field`) never appear; one dot per category per on-screen cell, no cap, current view only |
+| **Event dots + category toggles** | Overlay raw events per category. |
 | **Clear data** | Remove the locally stored index and the in-memory event data |
-
-Hovering a portal shows team / level, UPC status, total interactions and the per-category breakdown (hack, capture, deploy, upgrade, mod, link), plus the first visit, last visit and the span between them. The panel footer reports portal count, UPC / UPV and coverage for the current view — **UPC is included in UPV**, and only portals inside the map bounds are counted.
 
 The plugin is an independent canvas layer and **never writes portal `fillColor`**, so it coexists with IITC's built-in portal-history highlighter.
 
@@ -155,17 +155,10 @@ The plugin is an independent canvas layer and **never writes portal `fillColor`*
 - CLI mode: only reads the `--src` directory and writes to `--out`; the **source directory is never modified**;
 - `data/`, `raw/`, `node_modules/` and `dist/` are all excluded by `.gitignore`;
 - Badge icons are hotlinked from [ingress.plus](https://ingress.plus/badges) and are not stored in this repository; map tiles come from [OpenFreeMap](https://openfreemap.org/) / OpenStreetMap;
-- `npm run build` copies only `meta.json`, `dashboard.json`, `portals.geojson`, `events.json` and `opr.geojson` into `dist/data` (`DATA-NOTES.md` and the raw export are never copied). `meta.json` still contains the profile / Comm text, and `events.json` / `portals.geojson` contain precise locations — **these are still real personal data**;
+- `npm run build` copies only `meta.json`, `dashboard.json`, `portals.geojson`, `events.json` and `opr.geojson` into `dist/data`. `meta.json` still contains the profile / Comm text, and `events.json` / `portals.geojson` contain precise locations — **these are still real personal data**;
 - The IITC plugin makes no network requests, but stores coordinates at roughly 1 m precision, interaction counts and first / last visit timestamps in `intel.ingress.com`'s localStorage, readable by same-origin scripts; see the "IITC plugin" section above.
 
 > **About deployment**: this tool is designed for **local deployment**. The build output can technically be hosted on a static server, but a GDPR export contains sensitive personal information (precise locations, timestamps, e-mail, devices), so **online deployment is not recommended** — the files in `dist/data` are your real data, so **never host `dist/` publicly**.
-
----
-
-## ROADMAP
-
-- [x] Trajectory playback (time-compression rates, no interpolation across long gaps, dwell aggregation, activity calendar)
-- [x] IITC plugin
 
 ---
 
@@ -175,7 +168,7 @@ The plugin is an independent canvas layer and **never writes portal `fillColor`*
 - The code of this project was implemented by AI.
 - This project **distributes and contains no raw personal data files**; README screenshots are synthetic or redacted. Users are responsible for storing and handling their own GDPR exports.
 - Badge icons are copyrighted by their respective owners and hotlinked from ingress.plus; map data © OpenStreetMap contributors, © OpenFreeMap.
-- Credits: [UPC-UPV-for-IITC](https://github.com/Choujingress/UPC-UPV-for-IITC) (concept reference), [cantonres/.github](https://github.com/cantonres/.github) (in-game terminology from the community onboarding tutorials), [md-atlas](https://github.com/ReiiNoki/md-atlas) (Intel-style basemap reference), [ingress.plus](https://ingress.plus/badges) (badge icons).
+- Credits: [UPC-UPV-for-IITC](https://github.com/Choujingress/UPC-UPV-for-IITC) (concept reference), [MDtrace-Data](https://github.com/szres/MDtrace-Data) (reference for playback time ranges cleanup behaviour), [cantonres/.github](https://github.com/cantonres/.github) (in-game terminology from the community onboarding tutorials), [md-atlas](https://github.com/ReiiNoki/md-atlas) (Intel-style basemap reference), [ingress.plus](https://ingress.plus/badges) (badge icons).
 
 ## License
 

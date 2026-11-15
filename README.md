@@ -168,7 +168,7 @@ npm run preview        # 本地预览构建产物
 - 本项目代码由 AI 实现。
 - 本项目**不分发、不包含任何原始个人数据文件**；README 截图为合成数据或已脱敏。任何由用户导出的 GDPR 数据由用户自行负责保管、使用与合规。
 - 徽章图标版权归其各自权利人所有，图片热链自 ingress.plus；地图数据 © OpenStreetMap contributors、© OpenFreeMap。
-- 参考与致谢：[UPC-UPV-for-IITC](https://github.com/Choujingress/UPC-UPV-for-IITC)（思路参考）、[cantonres/.github](https://github.com/cantonres/.github)（社区新人教程中的游戏术语/专用词汇）、[md-atlas](https://github.com/ReiiNoki/md-atlas)（intel 风格底图参考）、[ingress.plus](https://ingress.plus/badges)（徽章图标）。
+- 参考与致谢：[UPC-UPV-for-IITC](https://github.com/Choujingress/UPC-UPV-for-IITC)（思路参考）、[MDtrace-Data](https://github.com/szres/MDtrace-Data)（轨迹回放的设定参考）、[cantonres/.github](https://github.com/cantonres/.github)（社区新人教程中的游戏术语/专用词汇）、[md-atlas](https://github.com/ReiiNoki/md-atlas)（intel 风格底图参考）、[ingress.plus](https://ingress.plus/badges)（徽章图标）。
 
 ## License
 
